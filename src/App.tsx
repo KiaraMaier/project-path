@@ -1,7 +1,6 @@
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import { MantineProvider } from '@mantine/core';
-import './App.css';
 import { HeaderSimple } from './components/Header/HeaderSimple';
 import { NewNote } from './features/NotePage/components/NewNote';
 
