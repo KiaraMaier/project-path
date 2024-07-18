@@ -1,10 +1,10 @@
 import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
 import { useState } from 'react';
-import useOllamaChat from './useOllamaChat';
+import useOllamaChat from '../hooks/useOllamaChat';
 import { QuestionsBox } from './QuestionsBox';
-import { GoalBox } from './GoalsBox';
+import { GoalsBox } from './GoalsBox';
 
-export function Home() {
+export function NewNote() {
   const { questions, response, loading, error, chat } = useOllamaChat();
   const [message, setMessage] = useState('');
 
@@ -31,7 +31,7 @@ export function Home() {
         <Grid gutter="md">
           <Grid.Col span={6}>
             <Group>
-              <GoalBox />
+              <GoalsBox />
             </Group>
 
             <Paper

@@ -1,0 +1,19 @@
+.control {
+  &[data-inactive] {
+    opacity: 0;
+    cursor: default;
+  }
+}
+
+.container {
+  height: 8rem;
+}
+
+.controls {
+  height: 7.5rem;
+}
+
+.indicators {
+  position: relative;
+  overflow: hidden;
+}

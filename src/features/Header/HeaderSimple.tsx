@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Container, Group, Burger } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import Logo from "./logo.png";
-import classes from "./HeaderSimple.module.css";
+import { useState } from 'react';
+import { Container, Group, Burger } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import Logo from './logo.png';
+import classes from './HeaderSimple.module.css';
 
 const links = [
-  { link: "/home", label: "Home" },
-  { link: "/notes", label: "Notes" },
-  { link: "/profile", label: "Profile" },
+  { link: '/home', label: 'Home' },
+  { link: '/notes', label: 'Notes' },
+  { link: '/profile', label: 'Profile' },
 ];
 
 export function HeaderSimple() {

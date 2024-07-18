@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ollama from 'ollama';
-import { parseJSON } from './index';
+import { parseJSON } from '../index';
 
 const useOllamaChat = () => {
   const [response, setResponse] = useState('');
