@@ -1,42 +1,51 @@
-import { Text, Container, Paper, Grid, Group } from '@mantine/core';
+import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
+import { useState } from 'react';
+import useOllamaChat from './useOllamaChat';
+import { QuestionsBox } from './QuestionsBox';
+import { GoalBox } from './GoalsBox';
 
 export function Home() {
+  const { questions, response, loading, error, chat } = useOllamaChat();
+  const [message, setMessage] = useState('');
+
+  const handleSendMessage = async () => {
+    await chat(message);
+  };
+
   return (
     <div>
       <Container>
-        <Grid grow gutter="md">
+        <div>
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Ask a question..."
+          />
+          <button onClick={handleSendMessage} disabled={loading}>
+            Send
+          </button>
+          {loading && <p>Loading...</p>}
+          {error && <p>Error: {error}</p>}
+        </div>
+        <Grid gutter="md">
           <Grid.Col span={6}>
             <Group>
-              <Paper
-                shadow="xs"
-                p="sm"
-                style={{ maxWidth: '100%', width: '100%', height: '10rem' }}
-              >
-                <Text>My Goals go here</Text>
-              </Paper>
+              <GoalBox />
             </Group>
-          </Grid.Col>
 
-          <Grid.Col span={6} style={{ gridColumn: 'span 2' }}>
             <Paper
               shadow="xs"
               p="sm"
-              style={{ maxWidth: '100%', width: '100%', height: '330%' }}
+              mt="md"
+              style={{ maxWidth: '100%', width: '100%', height: '20rem' }}
             >
-              <Text>Questions to answer - This col over the two rows!</Text>
+              <Textarea variant="unstyled" placeholder="Write here" />
             </Paper>
           </Grid.Col>
-
           <Grid.Col span={6}>
-            <Paper
-              shadow="xs"
-              p="sm"
-              style={{ maxWidth: '100%', width: '100%', height: '22rem' }}
-            >
-              <Text>This is my note so far</Text>
-            </Paper>
+            <QuestionsBox questions={questions} />
           </Grid.Col>
-          <Grid.Col span={6}></Grid.Col>
         </Grid>
       </Container>
     </div>
