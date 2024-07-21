@@ -1,33 +1,19 @@
 import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useOllamaChat from '../hooks/useOllamaChat';
 import { QuestionsBox } from './QuestionsBox';
 import { GoalsBox } from './GoalsBox';
 
 export function NewNote() {
   const { questions, response, loading, error, chat } = useOllamaChat();
-  const [message, setMessage] = useState('');
 
-  const handleSendMessage = async () => {
-    await chat(message);
-  };
+  useEffect(() => {
+    chat();
+  }, []);
 
   return (
     <div>
       <Container>
-        <div>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ask a question..."
-          />
-          <button onClick={handleSendMessage} disabled={loading}>
-            Send
-          </button>
-          {loading && <p>Loading...</p>}
-          {error && <p>Error: {error}</p>}
-        </div>
         <Grid gutter="md">
           <Grid.Col span={6}>
             <Group>
@@ -44,7 +30,9 @@ export function NewNote() {
             </Paper>
           </Grid.Col>
           <Grid.Col span={6}>
-            <QuestionsBox questions={questions} />
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            <QuestionsBox questions={questions} response={response} />
           </Grid.Col>
         </Grid>
       </Container>

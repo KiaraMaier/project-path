@@ -1,6 +1,25 @@
 import { Text, Paper, Button, Textarea } from '@mantine/core';
+import { useState } from 'react';
+import { addToList } from '../index';
 
-export function QuestionsBox(questions) {
+interface QuestionsBoxProps {
+  questions: string[];
+  response: string;
+}
+
+export function QuestionsBox({ questions, response }: QuestionsBoxProps) {
+  let conversationList: [string, string][][] = [[]];
+
+  // const [answers, setAnswers] = useState({
+  //   A1: '',
+  //   A2: '',
+  //   A3: '',
+  // });
+
+  // const handleSubmit = () => {
+  //   addToList(questions, answers, conversationList);
+  // };
+
   return (
     <Paper
       shadow="xs"

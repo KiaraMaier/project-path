@@ -9,9 +9,12 @@ const useOllamaChat = () => {
   const [questions, setQuestions] = useState<string[]>([]);
 
   const instructions =
-    'When given a list of activities as well as a goal, you should provide 3 questions for the user to select from. These questions will be used to assist with writing reflective notes so that a user can track their progress that they have set out to achieve over the year. Ask open ended questions rather ones that can be answered with “yes” and “no”. Use UK English. The user has an intellectual disability, use short, simple and clear language, shorter than 15 words.When given a list of activities as well as a goal, you should provide 3 questions for the user to select from. These questions will be used to assist with writing reflective notes so that a user can track their progress that they have set out to achieve over the year. Ask open ended questions rather ones that can be answered with “yes” and “no”. Use UK English. The user has an intellectual disability, use short, simple and clear language, shorter than 15 words. Only Return a JSON String formatted like this, no chit chat: {“Q1”: “”, “Q2”:””…}';
+    'When given a list of activities as well as a goal, you should provide 3 questions for the user to select from. These questions will be used to assist with writing reflective notes so that a user can track their progress over the year. Ask open ended questions rather ones that can be answered with “yes” and “no”. Use UK English. The user has an intellectual disability, use short, simple and clear language, shorter than 15 words. Respond strictly and only in this JSON format as the response is to be used in an application: {"Q1": "", "Q2": "", "Q3": ""}';
 
-  const chat = async (message: string) => {
+  const message =
+    '{"Goal": "I want to improve my daily living skills to live as safely and independently as possible in a house near my parents, now and in the future.", "Activities": "Boxing"}';
+
+  const chat = async () => {
     setLoading(true);
     setError('');
     try {
@@ -26,7 +29,7 @@ const useOllamaChat = () => {
         ],
       });
       setResponse(result.message.content);
-      setQuestions(parseJSON(response));
+      setQuestions(parseJSON(result.message.content));
     } catch (err) {
       setError('Error occured');
     } finally {
