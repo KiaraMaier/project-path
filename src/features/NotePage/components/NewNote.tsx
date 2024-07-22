@@ -1,16 +1,10 @@
-import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
+import { Container, Paper, Grid, Group, Textarea, Loader } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import useOllamaChat from '../hooks/useOllamaChat';
 import { QuestionsBox } from './QuestionsBox';
 import { GoalsBox } from './GoalsBox';
 
 export function NewNote() {
-  const { questions, response, loading, error, chat } = useOllamaChat();
-
-  useEffect(() => {
-    chat();
-  }, []);
-
   return (
     <div>
       <Container>
@@ -30,9 +24,7 @@ export function NewNote() {
             </Paper>
           </Grid.Col>
           <Grid.Col span={6}>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
-            <QuestionsBox questions={questions} response={response} />
+            <QuestionsBox />
           </Grid.Col>
         </Grid>
       </Container>
