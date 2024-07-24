@@ -1,4 +1,17 @@
-import { Text, Paper, Button, Textarea, Loader } from '@mantine/core';
+import {
+  Text,
+  Paper,
+  Button,
+  Textarea,
+  Loader,
+  Overlay,
+  Container,
+  LoadingOverlay,
+  Box,
+  Center,
+  Stack,
+  SimpleGrid,
+} from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { addToList } from '../index';
 import useOllamaChat from '../hooks/useOllamaChat';
@@ -9,6 +22,8 @@ export function QuestionsBox() {
     [string, string][][]
   >([[]]);
   const [answers, setAnswers] = useState(['', '', '']);
+  const [clickCount, setClickCount] = useState(0);
+  const [genNote, setGenNote] = useState(false);
 
   useEffect(() => {
     chat();
@@ -25,6 +40,13 @@ export function QuestionsBox() {
     setConversationList(updatedList);
     setAnswers(['', '', '']);
     chat();
+    setClickCount((prevCount) => {
+      const newCount = prevCount + 1;
+      if (newCount === 2) {
+        setGenNote(true);
+      }
+      return newCount;
+    });
   };
 
   return (
@@ -40,46 +62,62 @@ export function QuestionsBox() {
         justifyContent: 'space-between',
       }}
     >
-      {loading && <Loader color="blue" />}
-      {error && <p>Error: {error}</p>}
-      <div>
-        <Text>Q1: {questions[0]}</Text>
-        <Textarea
-          value={answers[0]}
-          onChange={(e) => handleInputChange(0, e.target.value)}
-          placeholder="Write here"
-        />
-        <Text mt="xl">Q2: {questions[1]}</Text>
-        <Textarea
-          value={answers[1]}
-          onChange={(e) => handleInputChange(1, e.target.value)}
-          placeholder="Write here"
-        />
-        <Text mt="xl">Q3: {questions[2]}</Text>
-        <Textarea
-          value={answers[2]}
-          onChange={(e) => handleInputChange(2, e.target.value)}
-          placeholder="Write here"
-        />
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button mt="xl" onClick={handleSubmit}>
-          New Questions
-        </Button>
-      </div>
-      <div>
-        {conversationList.map((conversation, index) => (
-          <div key={index}>
-            {conversation.map(([question, answer], i) => (
-              <div key={i}>
-                <p>
-                  <strong>{question}</strong>: {answer}
-                </p>
+      {loading || genNote ? (
+        <>
+          {loading ? (
+            <Center h={500}>
+              <Loader size="lg" />
+              <Text ml="md">Loading your questions</Text>
+            </Center>
+          ) : (
+            <Center h={500}>
+              <Loader size="lg" />
+              <Text ml="md">Generating Note</Text>
+            </Center>
+          )}
+        </>
+      ) : (
+        <>
+          <div>
+            <Text>Q1: {questions[0]}</Text>
+            <Textarea
+              value={answers[0]}
+              onChange={(e) => handleInputChange(0, e.target.value)}
+              placeholder="Write here"
+            />
+            <Text mt="xl">Q2: {questions[1]}</Text>
+            <Textarea
+              value={answers[1]}
+              onChange={(e) => handleInputChange(1, e.target.value)}
+              placeholder="Write here"
+            />
+            <Text mt="xl">Q3: {questions[2]}</Text>
+            <Textarea
+              value={answers[2]}
+              onChange={(e) => handleInputChange(2, e.target.value)}
+              placeholder="Write here"
+            />
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button mt="xl" onClick={handleSubmit}>
+              New Questions
+            </Button>
+          </div>
+          {/* <div>
+            {conversationList.map((conversation, index) => (
+              <div key={index}>
+                {conversation.map(([question, answer], i) => (
+                  <div key={i}>
+                    <p>
+                      <strong>{question}</strong>: {answer}
+                    </p>
+                  </div>
+                ))}
               </div>
             ))}
-          </div>
-        ))}
-      </div>
+          </div> */}
+        </>
+      )}
     </Paper>
   );
 }
