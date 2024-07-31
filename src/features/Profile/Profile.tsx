@@ -1,7 +1,7 @@
 import { Paper, Text, Center } from '@mantine/core';
-import undraw_write from './undraw_write.svg';
+import undraw_write from './undraw_profile.svg';
 
-export function Home() {
+export function Profile() {
   return (
     <Center>
       <Paper
@@ -9,7 +9,7 @@ export function Home() {
         p="xl"
         style={{ maxWidth: '100%', width: '50%', height: '30rem' }}
       >
-        <Text>Homepage</Text>
+        <Text>Profile Page</Text>
         <Center>
           <img src={undraw_write} alt="moments" style={{ maxWidth: '35%' }} />
         </Center>

@@ -1,10 +1,12 @@
-import { Container, Paper, Grid, Group, Textarea, Loader } from '@mantine/core';
-import { useEffect, useState } from 'react';
-import useOllamaChat from '../hooks/useOllamaChat';
+import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
 import { QuestionsBox } from './QuestionsBox';
 import { GoalsBox } from './GoalsBox';
+import { useLocation } from 'react-router-dom';
 
-export function NewNote() {
+export function NewNotePage() {
+  const location = useLocation();
+  const activities = location.state?.activities;
+
   return (
     <div>
       <Container>
@@ -13,7 +15,6 @@ export function NewNote() {
             <Group>
               <GoalsBox />
             </Group>
-
             <Paper
               shadow="xs"
               p="sm"
@@ -24,7 +25,7 @@ export function NewNote() {
             </Paper>
           </Grid.Col>
           <Grid.Col span={6}>
-            <QuestionsBox />
+            <QuestionsBox activities={activities} />
           </Grid.Col>
         </Grid>
       </Container>

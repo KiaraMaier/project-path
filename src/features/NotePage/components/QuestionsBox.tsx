@@ -15,15 +15,17 @@ import {
 import { useEffect, useState } from 'react';
 import { addToList } from '../index';
 import useOllamaChat from '../hooks/useOllamaChat';
+import { useNavigate } from 'react-router-dom';
 
-export function QuestionsBox() {
-  const { questions, response, loading, error, chat } = useOllamaChat();
+export function QuestionsBox(activities: string) {
+  const { questions, loading, error, chat } = useOllamaChat(activities);
   const [conversationList, setConversationList] = useState<
     [string, string][][]
   >([[]]);
   const [answers, setAnswers] = useState(['', '', '']);
   const [clickCount, setClickCount] = useState(0);
   const [genNote, setGenNote] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     chat();
@@ -42,8 +44,9 @@ export function QuestionsBox() {
     chat();
     setClickCount((prevCount) => {
       const newCount = prevCount + 1;
-      if (newCount === 2) {
+      if (newCount === 1) {
         setGenNote(true);
+        navigate('/generate');
       }
       return newCount;
     });
@@ -62,7 +65,7 @@ export function QuestionsBox() {
         justifyContent: 'space-between',
       }}
     >
-      {loading || genNote ? (
+      {loading || error ? (
         <>
           {loading ? (
             <Center h={500}>
@@ -71,8 +74,7 @@ export function QuestionsBox() {
             </Center>
           ) : (
             <Center h={500}>
-              <Loader size="lg" />
-              <Text ml="md">Generating Note</Text>
+              <Text ml="md">Error occured</Text>
             </Center>
           )}
         </>
