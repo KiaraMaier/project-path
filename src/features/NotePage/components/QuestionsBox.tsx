@@ -4,20 +4,20 @@ import {
   Button,
   Textarea,
   Loader,
-  Overlay,
-  Container,
-  LoadingOverlay,
-  Box,
   Center,
-  Stack,
-  SimpleGrid,
+  Group,
 } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { addToList } from '../index';
 import useOllamaChat from '../hooks/useOllamaChat';
 import { useNavigate } from 'react-router-dom';
 
-export function QuestionsBox(activities: string) {
+interface QuestionsBoxProps {
+  activities: string;
+  onNoteChange: (newData: string) => void;
+}
+
+export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
   const { questions, loading, error, chat } = useOllamaChat(activities);
   const [conversationList, setConversationList] = useState<
     [string, string][][]
@@ -37,8 +37,19 @@ export function QuestionsBox(activities: string) {
     setAnswers(updatedAnswers);
   };
 
+  function listToString(conversationList: [string, string][][]): string {
+    return conversationList
+      .map((conversation) =>
+        conversation
+          .map(([question, answer]) => `${question}: \n${answer}`)
+          .join('\n\n')
+      )
+      .join('\n');
+  }
+
   const handleSubmit = () => {
     const updatedList = addToList(questions, answers, conversationList);
+    onNoteChange(listToString(conversationList));
     setConversationList(updatedList);
     setAnswers(['', '', '']);
     chat();
@@ -46,7 +57,7 @@ export function QuestionsBox(activities: string) {
       const newCount = prevCount + 1;
       if (newCount === 1) {
         setGenNote(true);
-        navigate('/generate');
+        navigate('/generate', { state: { updatedList } });
       }
       return newCount;
     });
@@ -83,6 +94,9 @@ export function QuestionsBox(activities: string) {
           <div>
             <Text>Q1: {questions[0]}</Text>
             <Textarea
+              // value={inputValue}
+              // onChange={handleNoteChange}
+              // placeholder="Write here"
               value={answers[0]}
               onChange={(e) => handleInputChange(0, e.target.value)}
               placeholder="Write here"
@@ -101,23 +115,13 @@ export function QuestionsBox(activities: string) {
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button mt="xl" onClick={handleSubmit}>
-              New Questions
-            </Button>
+            <Group>
+              <Button mt="xl">New Questions</Button>
+              <Button mt="xl" onClick={handleSubmit}>
+                Next
+              </Button>
+            </Group>
           </div>
-          {/* <div>
-            {conversationList.map((conversation, index) => (
-              <div key={index}>
-                {conversation.map(([question, answer], i) => (
-                  <div key={i}>
-                    <p>
-                      <strong>{question}</strong>: {answer}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div> */}
         </>
       )}
     </Paper>
