@@ -1,25 +1,28 @@
 import { Paper, Text } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 
+interface Conversation {
+  conversation: Question[];
+}
+
+type Question = {
+  question: string;
+  answer: string;
+};
+
 export function GeneratedNote() {
   const location = useLocation();
-  const populatedNote: [string, string][][] = location.state?.updatedList;
+  const populatedNote: Conversation = location.state?.updatedConversation;
 
-  function listToString(conversationList: [string, string][][]): string {
-    return conversationList
-      .map((conversation) =>
-        conversation
-          .map(([question, answer]) => `${question}: \n${answer}`)
-          .join('\n\n')
-      )
-      .join('\n');
+  function conversationToString(conversation: Conversation) {
+    return JSON.stringify(conversation);
   }
 
   return (
     <div>
       <Paper>
         <Text>Generated Note</Text>
-        {listToString(populatedNote)}
+        {conversationToString(populatedNote)}
       </Paper>
     </div>
   );

@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/carousel": "^7.11.2",
     "@mantine/charts": "^7.11.1",
     "@mantine/core": "^7.11.1",
     "@mantine/dates": "^7.11.1",
     "@mantine/form": "^7.11.1",
     "@mantine/hooks": "^7.11.1",
     "dayjs": "^1.11.11",
+    "embla-carousel-react": "^7.1.0",
+    "ollama": "^0.5.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "recharts": "^2.12.7"
@@ -33,6 +36,7 @@
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
     "prettier": "3.3.2",
+    "react-router-dom": "^6.25.1",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   }

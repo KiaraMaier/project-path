@@ -5,12 +5,21 @@ import { useState } from 'react';
 
 export function ActivitiesBox() {
   const navigate = useNavigate();
+  const [activities, setActivities] = useState('');
+  const [activitiesList, setActivitiesList] = useState<string[]>([]);
+
+  function extractActivities(activities: string): string[] {
+    return activities.split(' ');
+  }
 
   const handleSubmit = () => {
-    navigate('/newnote', { state: { activities } });
+    navigate('/newnote', { state: { activitiesList } });
   };
 
-  const [activities, setActivities] = useState('');
+  const handleInput = (event: any) => {
+    setActivities(event.currentTarget.value);
+    setActivitiesList(extractActivities(activities));
+  };
 
   return (
     <Center>
@@ -24,9 +33,7 @@ export function ActivitiesBox() {
         </Center>
 
         <Text mt="xl">What acitvities did you get up to this week?</Text>
-        <TextInput
-          onChange={(event) => setActivities(event.currentTarget.value)}
-        ></TextInput>
+        <TextInput onChange={handleInput}></TextInput>
         <Text size="sm"> Example: Dancing, Gardening, Cooking</Text>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Button onClick={handleSubmit}>Get started</Button>
