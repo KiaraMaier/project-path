@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import ollama from 'ollama';
 
+interface Note {
+  activities: string[];
+  goals: string[];
+  conversation: Conversation;
+}
+
 interface Conversation {
   conversation: Question[];
 }
@@ -10,23 +16,13 @@ type Question = {
   answer: string;
 };
 
-const useNoteGeneration = (note: Conversation) => {
+const useNoteGeneration = (note: Note) => {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const instructions =
     "Use the answers written from the user into a 'Progress Note'. Where the user's name, date and activities and goals are listed at the top. You are to label each sentence or paragraph from the following three labels: Goal Outcome, Health Information or Support Insight in brackets behind the sentence where/if applicable. Try not to change the wording of the user, however, fix spelling or grammatical errors, minimally expand on intents when required but mostly keep the wording the exact same, it should be written from the user. Group the information on same activity but try to write sentences rather than points. Use UK English.";
-
-  const noteObject = {
-    activities: [],
-    goals: {
-      goal1: '',
-      goal2: '',
-      goal3: '',
-    },
-    conversation: [],
-  };
 
   const message = JSON.stringify(note);
   console.log('message: ', message);

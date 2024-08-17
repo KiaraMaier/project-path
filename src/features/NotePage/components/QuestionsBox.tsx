@@ -96,7 +96,9 @@ export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
       const newCount = prevCount + 1;
       if (newCount === 3) {
         setGenNote(true);
-        navigate('/generate', { state: { updatedConversation } });
+        navigate('/generate', {
+          state: { activities, updatedConversation, goals },
+        });
       }
       return newCount;
     });
