@@ -1,8 +1,5 @@
-function extractJsonString(text: string) {
-  // Regular expression to match the JSON part of the string
-  const jsonMatch = text.match(/\{.*\}/);
-  return jsonMatch;
-}
+export const questionsInstruct =
+  'You are to generate 3 simple, reflective questions. Use the activity and the goal to guide you in the questions you ask. Ask open ended questions but ensure it is only asking one question per sentence. The user has an intellectual disability, this means you should use short and clear sentences under 10 words. Use simple words. Use UK English. Respond strictly and ONLY in this JSON format as the response is to be used in an application: {"Q1": "", "Q2": "", "Q3": ""}';
 
 export function parseJSON(text: string): string[] {
   try {

@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import ollama from 'ollama';
-import { parseJSON, questionsInstruct } from '../index';
+import { Note, noteGenerationInstruct } from '..';
 
-const useOllamaChat = (activity: string, goal: string) => {
+const useNoteGeneration = (note: Note) => {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [questions, setQuestions] = useState<string[]>([]);
 
-  const messageObject = {
-    Goal: goal,
-    Activities: activity,
-  };
-
-  const message = JSON.stringify(messageObject);
+  const message = JSON.stringify(note);
+  console.log('message: ', message);
 
   const chat = async () => {
     setLoading(true);
@@ -21,23 +16,23 @@ const useOllamaChat = (activity: string, goal: string) => {
     try {
       const result = await ollama.chat({
         model: 'llama3',
+        format: 'json',
         messages: [
           {
             role: 'system',
-            content: questionsInstruct,
+            content: noteGenerationInstruct,
           },
           { role: 'user', content: message },
         ],
       });
       setResponse(result.message.content);
-      setQuestions(parseJSON(result.message.content));
     } catch (err) {
       setError('Error occured');
     } finally {
       setLoading(false);
     }
   };
-  return { questions, response, loading, error, chat };
+  return { response, loading, error, chat };
 };
 
-export default useOllamaChat;
+export default useNoteGeneration;

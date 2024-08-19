@@ -136,9 +136,6 @@ export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
           <div>
             <Text>Q1: {questions[0]}</Text>
             <Textarea
-              // value={inputValue}
-              // onChange={handleNoteChange}
-              // placeholder="Write here"
               value={answers[0]}
               onChange={(e) => handleInputChange(0, e.target.value)}
               placeholder="Write here"
