@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Container, Group, Burger } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { Container, Group, Burger, Avatar, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Logo from './logo.png';
 import classes from './HeaderSimple.module.css';
@@ -11,9 +11,20 @@ const links = [
   { link: '/profile', label: 'Profile' },
 ];
 
+interface User {
+  userID: string;
+  name: string;
+  goals: {
+    goal1: string;
+    goal2: string;
+    goal3: string;
+  };
+}
+
 export function HeaderSimple() {
   const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(links[0].link);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   const items = links.map((link) => (
     <Link
@@ -29,6 +40,13 @@ export function HeaderSimple() {
     </Link>
   ));
 
+  useEffect(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
+
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
@@ -36,6 +54,11 @@ export function HeaderSimple() {
         <Group gap={5} visibleFrom="xs">
           {items}
         </Group>
+        <Group>
+          <Text>{currentUser ? currentUser.name : ''}</Text>
+          <Avatar radius="xl" />
+        </Group>
+
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>
     </header>

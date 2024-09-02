@@ -1,41 +1,62 @@
 import React, { useState } from 'react';
-import {
-  Center,
-  Table,
-  TextInput,
-  Button,
-  Avatar,
-  Container,
-  Group,
-} from '@mantine/core';
+import { Table, TextInput, Button, Container, Group } from '@mantine/core';
 
-interface NewUser {
-  name: string;
+interface UserGoals {
   goal1: string;
   goal2: string;
   goal3: string;
 }
 
+interface User {
+  name: string;
+  goals: UserGoals;
+}
+
 export function NewUserForm() {
-  const [newUser, setNewUser] = useState<NewUser>({
+  const [newUser, setNewUser] = useState<User>({
     name: '',
-    goal1: '',
-    goal2: '',
-    goal3: '',
+    goals: {
+      goal1: '',
+      goal2: '',
+      goal3: '',
+    },
+  });
+  const [users, setUsers] = useState<User[]>(() => {
+    const savedUsers = localStorage.getItem('users');
+    return savedUsers ? JSON.parse(savedUsers) : [];
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setNewUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
+    if (name === 'name') {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        name: value,
+      }));
+    } else {
+      // For goal inputs, we need to update the nested goals object
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        goals: {
+          ...prevUser.goals,
+          [name]: value,
+        },
+      }));
+    }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log('New User:', newUser);
-    // Handle form submission logic here, e.g., saving the new user data
+  const handleSubmit = () => {
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    setNewUser({
+      name: '',
+      goals: {
+        goal1: '',
+        goal2: '',
+        goal3: '',
+      },
+    });
   };
 
   return (
@@ -64,7 +85,7 @@ export function NewUserForm() {
                   <TextInput
                     placeholder="Enter first goal"
                     name="goal1"
-                    value={newUser.goal1}
+                    value={newUser.goals.goal1}
                     onChange={handleChange}
                     required
                   />
@@ -75,7 +96,7 @@ export function NewUserForm() {
                   <TextInput
                     placeholder="Enter second goal"
                     name="goal2"
-                    value={newUser.goal2}
+                    value={newUser.goals.goal2}
                     onChange={handleChange}
                     required
                   />
@@ -86,7 +107,7 @@ export function NewUserForm() {
                   <TextInput
                     placeholder="Enter third goal"
                     name="goal3"
-                    value={newUser.goal3}
+                    value={newUser.goals.goal3}
                     onChange={handleChange}
                     required
                   />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Center, Container, Group, Table } from '@mantine/core';
+import { Avatar, Center, Chip, Container, Group, Table } from '@mantine/core';
 
 interface UserGoals {
   goal1: string;
@@ -8,20 +8,24 @@ interface UserGoals {
 }
 
 interface User {
-  userID: string;
   name: string;
   goals: UserGoals;
 }
 export function UserPreview() {
   const [userData, setUserData] = useState([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // Fetch data from user.json
-    fetch('/user.json')
-      .then((response) => response.json())
-      .then((data) => setUserData(data))
-      .catch((error) => console.error('Error fetching user data:', error));
+    const savedUsers = localStorage.getItem('users');
+    if (savedUsers) {
+      setUserData(JSON.parse(savedUsers));
+    }
   }, []);
+
+  const handleUserSelect = (user: User) => {
+    setSelectedUser(user);
+    localStorage.setItem('currentUser', JSON.stringify(user));
+  };
 
   return (
     <Container mt="xl">
@@ -34,11 +38,20 @@ export function UserPreview() {
         </Table.Thead>
         <Table.Tbody>
           {userData.map((user: User) => (
-            <React.Fragment key={user.userID}>
+            <React.Fragment key={user.name}>
               <Table.Tr>
                 <Table.Td rowSpan={3}>
-                  {user.name}
-                  <Avatar mt="sm" color="cyan" radius="xl" size="md"></Avatar>
+                  <Group>
+                    {userData.map((user: User) => (
+                      <Chip
+                        key={user.name}
+                        checked={selectedUser?.name === user.name}
+                        onChange={() => handleUserSelect(user)}
+                      >
+                        {user.name}
+                      </Chip>
+                    ))}
+                  </Group>
                 </Table.Td>
                 <Table.Td>{user.goals.goal1}</Table.Td>
               </Table.Tr>
