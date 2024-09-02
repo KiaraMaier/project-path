@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import ollama from 'ollama';
 import { parseJSON, questionsInstruct } from '../index';
+import { UserGoals } from '../index';
 
-const useOllamaChat = (activity: string, goal: string) => {
+const useOllamaChat = (activity: string, goals: UserGoals) => {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
 
   const messageObject = {
-    Goal: goal,
-    Activities: activity,
+    Goal: goals,
+    Activity: activity,
   };
 
   const message = JSON.stringify(messageObject);
@@ -21,6 +22,7 @@ const useOllamaChat = (activity: string, goal: string) => {
     try {
       const result = await ollama.chat({
         model: 'llama3',
+        format: 'json',
         messages: [
           {
             role: 'system',

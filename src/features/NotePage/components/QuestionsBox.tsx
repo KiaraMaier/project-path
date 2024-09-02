@@ -36,13 +36,13 @@ export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
   };
   const [activity, setActivity] = useState(activities[0]);
   const [goal, setGoal] = useState(goals.goal1);
-  const { questions, loading, error, chat } = useOllamaChat(activity, goal);
+  const { questions, loading, error, chat } = useOllamaChat(activity, goals);
   const [conversation, setConversation] = useState<Conversation>({
     conversation: [],
   });
   const [answers, setAnswers] = useState(['', '', '']);
   const [clickCount, setClickCount] = useState(0);
-  const [genNote, setGenNote] = useState(false);
+  const [, setGenNote] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
