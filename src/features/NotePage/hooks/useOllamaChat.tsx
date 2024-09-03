@@ -8,9 +8,8 @@ const useOllamaChat = (activity: string, goals: UserGoals) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [questions, setQuestions] = useState<string[]>([]);
-
   const messageObject = {
-    Goal: goals,
+    Goals: goals,
     Activity: activity,
   };
 
@@ -23,6 +22,9 @@ const useOllamaChat = (activity: string, goals: UserGoals) => {
       const result = await ollama.chat({
         model: 'llama3',
         format: 'json',
+        options: {
+          temperature: 0.1,
+        },
         messages: [
           {
             role: 'system',

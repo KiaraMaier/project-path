@@ -1,8 +1,9 @@
-import { Container, Paper, Grid, Group, Textarea } from '@mantine/core';
+import { Container, Paper, Grid, Group } from '@mantine/core';
 import { QuestionsBox } from './QuestionsBox';
 import { GoalsBox } from './GoalsBox';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { UserGoals, emptyGoals } from '..';
 
 interface Conversation {
   conversation: Question[];
@@ -24,13 +25,23 @@ export function NewNotePage() {
     setConversation(updatedConversation);
   };
 
+  const [goals, setGoals] = useState<UserGoals>(emptyGoals);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      const currentUser = JSON.parse(savedUser);
+      setGoals(currentUser.goals || emptyGoals);
+    }
+  }, []);
+
   return (
     <div>
       <Container>
         <Grid gutter="md">
           <Grid.Col span={6}>
             <Group>
-              <GoalsBox />
+              <GoalsBox goals={goals} />
             </Group>
             <Paper shadow="xs" p="sm" mt="md" style={{ minHeight: '20rem' }}>
               <div>
@@ -50,6 +61,7 @@ export function NewNotePage() {
           <Grid.Col span={6}>
             <QuestionsBox
               activities={activities}
+              goals={goals}
               onNoteChange={handleNoteChange}
             />
           </Grid.Col>

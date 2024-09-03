@@ -10,9 +10,11 @@ import {
 import { useEffect, useState } from 'react';
 import useOllamaChat from '../hooks/useOllamaChat';
 import { useNavigate } from 'react-router-dom';
+import { UserGoals } from '..';
 
 interface QuestionsBoxProps {
   activities: string[];
+  goals: UserGoals;
   onNoteChange: (updatedConversation: Conversation) => void;
 }
 
@@ -25,17 +27,12 @@ type Question = {
   answer: string;
 };
 
-export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
-  const goals = {
-    goal1:
-      "I want to maintain and improve my physical health and well-being, with increased physical exercise.'",
-    goal2:
-      'I want to develop my social and communication skills to make friends and to participate in community activities, including volunteering or working.',
-    goal3:
-      'I want to improve my daily living skills to live as safely and independently as possible in a house near my parents, now and in the future',
-  };
+export function QuestionsBox({
+  activities,
+  goals,
+  onNoteChange,
+}: QuestionsBoxProps) {
   const [activity, setActivity] = useState(activities[0]);
-  const [goal, setGoal] = useState(goals.goal1);
   const { questions, loading, error, chat } = useOllamaChat(activity, goals);
   const [conversation, setConversation] = useState<Conversation>({
     conversation: [],
@@ -44,19 +41,17 @@ export function QuestionsBox({ activities, onNoteChange }: QuestionsBoxProps) {
   const [clickCount, setClickCount] = useState(0);
   const [, setGenNote] = useState(false);
   const navigate = useNavigate();
-
+  console.log('goals', goals);
   useEffect(() => {
-    if (goal && activity) {
+    if (activity) {
       chat(); // Auto calls chat after goal and activity are updated
     }
-  }, [goal, activity]);
+  }, [activity]);
 
   function chooseRound() {
     if (clickCount == 0) {
-      setGoal(goals.goal2);
       setActivity(activities[1]);
     } else if (clickCount == 1) {
-      setGoal(goals.goal3);
       setActivity(activities[2]);
     }
   }

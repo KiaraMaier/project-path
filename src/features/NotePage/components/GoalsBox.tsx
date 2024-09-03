@@ -1,31 +1,9 @@
 import { Text, Paper } from '@mantine/core';
 import { Carousel } from '@mantine/carousel';
 import classes from '../styles/GoalsBox.module.css';
-import { useEffect, useState } from 'react';
+import { UserGoals } from '..';
 
-const emptyGoals = {
-  goal1: '',
-  goal2: '',
-  goal3: '',
-};
-
-interface UserGoals {
-  goal1: string;
-  goal2: string;
-  goal3: string;
-}
-
-export function GoalsBox() {
-  const [goals, setGoals] = useState<UserGoals>(emptyGoals);
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      const currentUser = JSON.parse(savedUser);
-      setGoals(currentUser.goals || emptyGoals);
-    }
-  }, []);
-
+export function GoalsBox({ goals }: { goals: UserGoals }) {
   return (
     <Paper
       shadow="xs"

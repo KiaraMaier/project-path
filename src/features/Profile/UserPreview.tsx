@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Center, Chip, Container, Group, Table } from '@mantine/core';
+import { Chip, Container, Group, Table } from '@mantine/core';
 
 interface UserGoals {
   goal1: string;
