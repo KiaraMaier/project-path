@@ -1,24 +1,29 @@
-import { Text, Paper, TextInput, Center, Button } from '@mantine/core';
+import {
+  Text,
+  Paper,
+  TextInput,
+  Center,
+  Button,
+  Container,
+  Group,
+} from '@mantine/core';
 import undraw_moments from '../assets/undraw_moments.svg';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 export function ActivitiesBox() {
   const navigate = useNavigate();
-  const [activities, setActivities] = useState('');
-  const [activitiesList, setActivitiesList] = useState<string[]>([]);
+  const [activities, setActivities] = useState<string[]>(['', '', '']);
 
-  function extractActivities(activities: string): string[] {
-    return activities.split(' ');
-  }
-
-  const handleSubmit = () => {
-    navigate('/newnote', { state: { activitiesList } });
+  const handleInput = (index: number, event: any) => {
+    const newActivities = [...activities];
+    newActivities[index] = event.currentTarget.value;
+    setActivities(newActivities);
   };
 
-  const handleInput = (event: any) => {
-    setActivities(event.currentTarget.value);
-    setActivitiesList(extractActivities(activities));
+  const handleSubmit = () => {
+    console.log('Activities:', activities);
+    navigate('/newnote', { state: { activities } });
   };
 
   return (
@@ -29,15 +34,25 @@ export function ActivitiesBox() {
         style={{ maxWidth: '100%', width: '50%', height: '30rem' }}
       >
         <Center>
-          <img src={undraw_moments} alt="moments" style={{ maxWidth: '40%' }} />
+          <img src={undraw_moments} alt="moments" style={{ maxWidth: '25%' }} />
         </Center>
-
         <Text mt="xl">What acitvities did you get up to this week?</Text>
-        <TextInput onChange={handleInput}></TextInput>
-        <Text size="sm"> Example: Dancing, Gardening, Cooking</Text>
-        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Container mt="lg" mx={0} px={0} size="50%">
+          {activities.map((_, index) => (
+            <TextInput
+              key={index}
+              mt={index > 0 ? 'sm' : 0}
+              leftSection={index + 1}
+              onChange={(event) => handleInput(index, event)}
+            />
+          ))}
+        </Container>
+        <Text mt="lg">
+          Example: Dancing, Gardening with friends, Cooking pasta
+        </Text>
+        <Group justify="flex-end" mt="lg">
           <Button onClick={handleSubmit}>Get started</Button>
-        </div>
+        </Group>
       </Paper>
     </Center>
   );

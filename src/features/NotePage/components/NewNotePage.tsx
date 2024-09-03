@@ -15,7 +15,7 @@ type Question = {
 
 export function NewNotePage() {
   const location = useLocation();
-  const activities: string[] = location.state?.activitiesList;
+  const activities: string[] = location.state?.activities;
   const [conversation, setConversation] = useState<Conversation>({
     conversation: [],
   });
