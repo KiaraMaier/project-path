@@ -41,7 +41,6 @@ export function QuestionsBox({
   const [clickCount, setClickCount] = useState(0);
   const [, setGenNote] = useState(false);
   const navigate = useNavigate();
-  console.log('goals', goals);
   useEffect(() => {
     if (activity) {
       chat(); // Auto calls chat after goal and activity are updated

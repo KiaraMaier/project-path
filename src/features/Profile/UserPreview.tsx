@@ -42,15 +42,13 @@ export function UserPreview() {
               <Table.Tr>
                 <Table.Td rowSpan={3}>
                   <Group>
-                    {userData.map((user: User) => (
-                      <Chip
-                        key={user.name}
-                        checked={selectedUser?.name === user.name}
-                        onChange={() => handleUserSelect(user)}
-                      >
-                        {user.name}
-                      </Chip>
-                    ))}
+                    <Chip
+                      key={user.name}
+                      checked={selectedUser?.name === user.name}
+                      onChange={() => handleUserSelect(user)}
+                    >
+                      {user.name}
+                    </Chip>
                   </Group>
                 </Table.Td>
                 <Table.Td>{user.goals.goal1}</Table.Td>

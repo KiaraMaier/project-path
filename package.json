@@ -16,6 +16,7 @@
     "@mantine/dates": "^7.11.1",
     "@mantine/form": "^7.11.1",
     "@mantine/hooks": "^7.11.1",
+    "@tabler/icons-react": "^3.14.0",
     "dayjs": "^1.11.11",
     "embla-carousel-react": "^7.1.0",
     "ollama": "^0.5.2",
