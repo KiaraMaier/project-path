@@ -1,4 +1,17 @@
-# React + TypeScript + Vite
+# Progress Notes App
+
+This is a POC application for the writing of Progress Notes.
+
+Env setup requirments:
+
+- Install Ollama on system (8 billion param model)
+- Install project node packages
+- Run in dev mode 'npm run dev'
+
+Current status of the project does not include a database. All data is stored in local storage of browser.
+The LLM runs locally on the device therefore a model must be installed, for this the Ollama API was used.
+
+### React + TypeScript + Vite (Template Notes)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
@@ -17,9 +30,9 @@ If you are developing a production application, we recommend updating the config
 export default {
   // other rules...
   parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json"],
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
     tsconfigRootDir: __dirname,
   },
 };
